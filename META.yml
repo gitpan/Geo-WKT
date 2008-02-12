@@ -1,0 +1,16 @@
+--- #YAML:1.0
+name:                Geo-WKT
+version:             0.02
+abstract:            Geometry in wellknown text format
+license:             ~
+author:              
+    - Mark Overmeer
+generated_by:        ExtUtils::MakeMaker version 6.42
+distribution_type:   module
+requires:     
+    Geo::Point:                    0.07
+    Test::More:                    0.47
+    Test::Pod:                     0
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.3.html
+    version: 1.3
