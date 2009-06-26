@@ -11,5 +11,5 @@ t/12poly.t
 t/13multipoint.t
 t/14multiline.t
 t/15multipoly.t
-t/pod.t
+t/99pod.t
 META.yml                                 Module meta-data (added by MakeMaker)

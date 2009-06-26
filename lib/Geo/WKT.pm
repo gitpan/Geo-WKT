@@ -1,13 +1,14 @@
-# Copyrights 2008 by Mark Overmeer.
+# Copyrights 2008-2009 by Mark Overmeer.
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.03.
+# Pod stripped from pm file by OODoc 1.06.
 use strict;
 use warnings;
 
 package Geo::WKT;
 use vars '$VERSION';
-$VERSION = '0.02';
+$VERSION = '0.03';
+
 use base 'Exporter';
 
 use Geo::Shape  ();
@@ -18,6 +19,7 @@ our @EXPORT = qw(
   parse_wkt_point
   parse_wkt_polygon
   parse_wkt_geomcol
+  parse_wkt_linestring
   wkt_point
   wkt_multipoint
   wkt_linestring
@@ -31,27 +33,25 @@ our @EXPORT = qw(
 
 sub wkt_optimal($);
 
-                                                                                
+
 sub parse_wkt_point($;$)
 {     ($_[0] =~ m/^point\(\s*(\S+)\s+(\S+)\)$/i)
     ? Geo::Point->xy($1+0, $2+0, $_[1])
     : undef;
 }
 
-                                                                                
+
 sub parse_wkt_polygon($;$)
 {   my ($string, $proj) = @_;
-    return undef unless $string && $string =~ m/^polygon\(\((.+)\)\)$/i;
+
+    $string && $string =~ m/^polygon\(\((.+)\)\)$/i
+        or return undef;
 
     my @poly;
     foreach my $poly (split m/\)\s*\,\s*\(/, $1)
     {   my @points = map { [split " ", $_, 2] }  split /\s*\,\s*/, $poly;
-        push @poly, Geo::Line->new(proj => $proj, points => \@points,
-           filled => 1);
+        push @poly, \@points;
     }
-
-    return undef
-        if @poly==1 && $poly[0]->points==1;
 
     Geo::Surface->new(@poly, proj => $proj);
 }
@@ -85,11 +85,25 @@ sub parse_wkt_geomcol($;$)
 }
 
 
+sub parse_wkt_linestring($;$)
+{   my ($string, $proj) = @_;
+
+    $string && $string =~ m/^linestring\((.+)\)$/i
+        or return undef
+
+    my @points = map { [split " ", $_, 2] }  split /\s*\,\s*/, $1;
+    @points > 1 or return;
+
+    Geo::Line->new(proj => $proj, points => \@points, filled => 0);
+}
+
+
 sub parse_wkt($;$)   # dirty code to avoid copying the sometimes huge string
 {
-      $_[0] =~ m/^point\(/i    ? &parse_wkt_point
-    : $_[0] =~ m/^polygon\(/i  ? &parse_wkt_polygon
-    :                            &parse_wkt_geomcol;
+      $_[0] =~ m/^point\(/i      ? &parse_wkt_point
+    : $_[0] =~ m/^polygon\(/i    ? &parse_wkt_polygon
+    : $_[0] =~ m/^linestring\(/i ? &parse_wkt_polygon
+    :                              &parse_wkt_geomcol;
 }
 
 
@@ -118,11 +132,11 @@ sub wkt_point($;$)
 
     defined $x && defined $y ? "POINT($x $y)" : ();
 }
-                                                                                
+
 
 sub wkt_linestring(@) { 'LINESTRING' . _list_of_points(@_) }
 
-                                                                                
+
 sub wkt_polygon(@)
 {   my @polys
       = !defined $_[0]             ? return ()
@@ -139,7 +153,7 @@ sub wkt_polygon(@)
 
 sub wkt_multipoint(@) { 'MULTIPOINT('. join(',', map {wkt_point($_)} @_) .')'}
 
-                                                                                
+
 sub wkt_multilinestring(@)
 {   return () unless @_;
 
@@ -148,7 +162,7 @@ sub wkt_multilinestring(@)
     . ')';
 }
 
-                                                                                
+
 sub wkt_multipolygon(@)
 {   return () unless @_;
 
@@ -163,15 +177,15 @@ sub wkt_multipolygon(@)
 sub wkt_optimal($)
 {   my $geom = shift;
     return wkt_point(undef) unless defined $geom;
- 
+
     return wkt_point($geom)
         if $geom->isa('Geo::Point');
- 
+
     return ( $geom->isRing && $geom->isFilled
            ? wkt_polygon($geom)
            : wkt_linestring($geom))
         if $geom->isa('Geo::Line');
- 
+
     return wkt_multipolygon($geom)
         if $geom->isa('Geo::Surface');
 
