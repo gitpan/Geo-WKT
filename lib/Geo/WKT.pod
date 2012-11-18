@@ -7,8 +7,6 @@ Geo::WKT - Well Known Text representation of geometry information
  Geo::WKT
    is a Exporter
 
-=head1 SYNOPSIS
-
 =head1 DESCRIPTION
 
 GIS application often communicate geographical structures in WKT
@@ -19,42 +17,26 @@ Geo::Point objects from and to this WKT.
 
 =head2 Parsing Well Known Text format (WKT)
 
-$obj-E<gt>B<parse_wkt>(STRING, [PROJECTION])
-
 =over 4
+
+=item $obj-E<gt>B<parse_wkt>(STRING, [PROJECTION])
 
 Parse any STRING into the applicable Geo::Shape structure.
 
-=back
-
-$obj-E<gt>B<parse_wkt_geomcol>(STRING, [PROJECTION])
-
-=over 4
+=item $obj-E<gt>B<parse_wkt_geomcol>(STRING, [PROJECTION])
 
 Convert a WKT string into Geo::Space objects, containing
 the exterior and optionally some interior polygons.
 
-=back
-
-B<parse_wkt_linestring>(STRING, [PROJECTION])
-
-=over 4
+=item B<parse_wkt_linestring>(STRING, [PROJECTION])
 
 Convert a WKT string into one Geo::Point object.
 
-=back
-
-B<parse_wkt_point>(STRING, [PROJECTION])
-
-=over 4
+=item B<parse_wkt_point>(STRING, [PROJECTION])
 
 Convert a WKT string into one Geo::Point object.
 
-=back
-
-B<parse_wkt_polygon>(STRING, [PROJECTION])
-
-=over 4
+=item B<parse_wkt_polygon>(STRING, [PROJECTION])
 
 Convert a WKT string into one Geo::Surface objects, containing
 the exterior and optionally some interior polygons.
@@ -63,72 +45,44 @@ the exterior and optionally some interior polygons.
 
 =head2 Constructing Well Known Text (WKT)
 
-B<wkt_geomcollection>(OBJECTS)
-
 =over 4
+
+=item B<wkt_geomcollection>(OBJECTS)
 
 Whole bunch of unsorted geometries. You may specify one Geo::Space
 or multiple things.
 
-=back
-
-B<wkt_linestring>(OBJECT|POINTS)
-
-=over 4
+=item B<wkt_linestring>(OBJECT|POINTS)
 
 A line string is a non-closed list ('string') of points.
 
-=back
-
-B<wkt_multilinestring>(OBJECTS|ARRAY-of-LINES|ARRAYS-of-ARRAY-OF-POINTS)
-
-=over 4
+=item B<wkt_multilinestring>(OBJECTS|ARRAY-of-LINES|ARRAYS-of-ARRAY-OF-POINTS)
 
 Format a list of lines into WKT.  A LINE contains Geo::Point
 objects or ARRAY-REFs to pairs. You may also provide a Geo::Line
 or a Math::Polygon.
 
-=back
-
-B<wkt_multipoint>(OBJECT|POINTS)
-
-=over 4
+=item B<wkt_multipoint>(OBJECT|POINTS)
 
 A set of points, which must be specified as list.  They can be stored in
 a Geo::Space.
 
-=back
-
-B<wkt_multipolygon>(OBJECTS|ARRAY-OF-LINES|ARRAYS-OF-ARRAY-OF-POINTS)
-
-=over 4
+=item B<wkt_multipolygon>(OBJECTS|ARRAY-OF-LINES|ARRAYS-OF-ARRAY-OF-POINTS)
 
 Format a list of closed lines into WKT.  A LINE contains Geo::Point
 objects or ARRAY-REFs to pairs. You may also provide a Geo::Line
 or a Math::Polygon.
 
-=back
-
-B<wkt_optimal>(OBJECT)
-
-=over 4
+=item B<wkt_optimal>(OBJECT)
 
 Pass any Geo::Shape object, and the easiest representation is
 returned.
 
-=back
-
-B<wkt_point>((X,Y)|ARRAY|GEOPOINT)
-
-=over 4
+=item B<wkt_point>((X,Y)|ARRAY|GEOPOINT)
 
 Format one point into WKT format.
 
-=back
-
-B<wkt_polygon>((LIST of POINTS|Geo::Line|ARRAY-of-POINTS) |Geo::Surface)
-
-=over 4
+=item B<wkt_polygon>((LIST of POINTS|Geo::Line|ARRAY-of-POINTS) |Geo::Surface)
 
 Format one polygon (exterior with optional interiors) into WKT format.
 An ARRAY contains Geo::Point objects or ARRAY-REFs to pairs. You
@@ -150,8 +104,8 @@ example:
 
 =head1 SEE ALSO
 
-This module is part of Geo-WKT distribution version 0.03,
-built on May 25, 2009. Website: F<http://perl.overmeer.net/geo>
+This module is part of Geo-WKT distribution version 0.04,
+built on November 18, 2012. Website: F<http://perl.overmeer.net/geo>
 All modules in this suite:
 L</Geo::Point>,
 L</Geo::Proj4>,
@@ -168,7 +122,7 @@ F<http://geo-perl@list.hut.fi>
 
 =head1 LICENSE
 
-Copyrights 2008-2009 by Mark Overmeer. For other contributors see ChangeLog.
+Copyrights 2008-2012 by [Mark Overmeer]. For other contributors see ChangeLog.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

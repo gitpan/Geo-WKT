@@ -1,13 +1,13 @@
-# Copyrights 2008-2009 by Mark Overmeer.
+# Copyrights 2008-2012 by [Mark Overmeer].
 #  For other contributors see ChangeLog.
 # See the manual pages for details on the licensing terms.
-# Pod stripped from pm file by OODoc 1.06.
+# Pod stripped from pm file by OODoc 2.00.
 use strict;
 use warnings;
 
 package Geo::WKT;
 use vars '$VERSION';
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 use base 'Exporter';
 
@@ -89,7 +89,7 @@ sub parse_wkt_linestring($;$)
 {   my ($string, $proj) = @_;
 
     $string && $string =~ m/^linestring\((.+)\)$/i
-        or return undef
+        or return undef;
 
     my @points = map { [split " ", $_, 2] }  split /\s*\,\s*/, $1;
     @points > 1 or return;
